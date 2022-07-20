@@ -1,0 +1,31 @@
+import pygame
+
+from typing import List, Tuple
+from y_sort_camera_group import YSortCameraGroup
+
+
+class ParticleEffect(pygame.sprite.Sprite):
+    def __init__(
+        self,
+        pos: Tuple,
+        animation_frames: List[pygame.Surface],
+        groups: List[YSortCameraGroup],
+    ):
+        super().__init__(groups)
+        self.sprite_type = "magic"
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.frames = animation_frames
+        self.image = self.frames[self.frame_index]
+        self.pos = pos
+        self.rect = self.image.get_rect(center=self.pos)
+
+    def animate(self):
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(self.frames):
+            self.kill()
+        else:
+            self.image = self.frames[int(self.frame_index)]
+
+    def update(self):
+        self.animate()
